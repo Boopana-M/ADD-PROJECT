@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="bold">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gratify</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #82cbffd5;
+            text-align: center;
+            position: relative; 
+            background-image: url('Screenshot 2024-12-04 210023.png');
+            background-size: contain; /* Ensures the image fits inside */
+            background-position: center; /* Center-aligns the image */
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Keeps the image fixed while scrolling */
+           
+
+
+        }
+        .hidden {
+            display: none;
+        }
+        h1, h2, p {
+            margin: 10px 0;
+        }
+        #title {
+            font-size: 48px;
+            color: #3d7a40;
+            font-weight: bold;
+        }
+        .container {
+            width: 80%;
+            max-width: 400px;
+        }
+        .top-right-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .top-right-buttons button {
+            margin: 5px;
+        }
+        button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: rgb(25, 19, 19);
+            background-color: #ff83aa;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            color: #333;
+            background-color: #dbf397;
+        }
+        .mission-point {
+            font-size: 18px;
+            color: #060a0c;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash" class="container">
+        <h1 id="title">Gratify</h1>
+    </div>
+    <!-- Main Page with Mission and Links -->
+    <div id="mainContent" class="container hidden">
+        <!-- Top-right buttons for Login and Sign Up -->
+        <div class="top-right-buttons">
+            <button onclick="showLogin()">Login</button>
+            <button onclick="showSignup()">Sign Up</button>
+        </div>
+        
+        <h2>I'm Your Secret Diary</h2>
+        <p class="mission-point">Tell me the things that you are grateful for</p>
+        <p class="mission-point"></p>
+
+        <div>
+            <button onclick="showPostFoodPage()">Today's</button>
+            <button onclick="showFindFoodPage()">History</button>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="container hidden">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="backToMain()">Back</button>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signupPage" class="container hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username">
+        <input type="email" id="signupEmail" placeholder="Email">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <input type="password" id="signupPassword" placeholder="Confirm Password">
+        <input type="tel" id="signupPassword" placeholder="Mobile Number">
+        <button onclick="signup()">Sign Up</button>
+        <button onclick="backToMain()">Back</button>
+    </div>
+
+    <!-- Post Food Page -->
+    <div id="postFoodPage" class="container hidden">
+        <h1>Today's Gratitude</h1>
+        <input type="date" id="foodName" placeholder="Today's Date">
+        <input type="text" id="foodDescription" placeholder="What Made Me Grateful Today">
+        <input type="text" id="took" placeholder="What I Take From This">
+        <button onclick="postFood()">Save it</button>
+        <button onclick="backToMain()">Back</button>
+    </div>
+
+    <!-- Find Food Page -->
+    <div id="findFoodPage" class="container hidden">
+        <h1>Gratitude History</h1>
+        <h3>Search Your History Here</h3>
+        <input type="date" id="foodName" placeholder="Search For A Date">
+        <div id="foodPosts" class="food-post"></div>
+        <button onclick="backToMain()">Back</button>
+    </div>
+
+    <script>
+        // Show splash screen for 1 second, then reveal main content
+        setTimeout(function() {
+            document.getElementById("splash").classList.add("hidden");
+            document.getElementById("mainContent").classList.remove("hidden");
+        }, 1000);
+
+        // Functions to show and hide sections
+        function showLogin() {
+            document.getElementById("mainContent").classList.add("hidden");
+            document.getElementById("loginPage").classList.remove("hidden");
+        }
+
+        function showSignup() {
+            document.getElementById("mainContent").classList.add("hidden");
+            document.getElementById("signupPage").classList.remove("hidden");
+        }
+
+        function backToMain() {
+            document.getElementById("postFoodPage").classList.add("hidden");
+            document.getElementById("findFoodPage").classList.add("hidden");
+            document.getElementById("loginPage").classList.add("hidden");
+            document.getElementById("signupPage").classList.add("hidden");
+            document.getElementById("mainContent").classList.remove("hidden");
+        }
+
+        function showPostFoodPage() {
+            document.getElementById("mainContent").classList.add("hidden");
+            document.getElementById("postFoodPage").classList.remove("hidden");
+        }
+
+        function showFindFoodPage() {
+            document.getElementById("mainContent").classList.add("hidden");
+            document.getElementById("findFoodPage").classList.remove("hidden");
+            displayFoodPosts();  // Display stored food posts
+        }
+
+        function login() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            if (username && password) {
+                alert("Logged in successfully!");
+                backToMain();
+            } else {
+                alert("Please enter both username and password.");
+            }
+        }
+
+        function signup() {
+            const username = document.getElementById("signupUsername").value;
+            const email = document.getElementById("signupEmail").value;
+            const password = document.getElementById("signupPassword").value;
+            if (username && email && password) {
+                alert("Signed up successfully!");
+                backToMain();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        function postFood() {
+            const foodName = document.getElementById("foodName").value;
+            const foodDescription = document.getElementById("foodDescription").value;
+            const took = document.getElementById("foodQuantity").value;
+            
+            if (foodName && foodDescription && took) {
+                const foodPost = { name: foodName, description: foodDescription,Quantity:foodQuantity };
+
+                let foodPosts = JSON.parse(localStorage.getItem("foodPosts")) || [];
+                foodPosts.push(foodPost);
+                localStorage.setItem("foodPosts", JSON.stringify(foodPosts));
+
+                document.getElementById("foodName").value = ""; 
+                document.getElementById("foodDescription").value = "";
+                document.getElementById("foodQuantity").value = "";
+
+                backToMain();
+            } else {
+                alert("Please fill in all fields");
+            }
+        }
+
+        function displayFoodPosts() {
+            const foodPostsContainer = document.getElementById("foodPosts");
+            foodPostsContainer.innerHTML = "";
+
+            const foodPosts = JSON.parse(localStorage.getItem("foodPosts")) || [];
+
+            foodPosts.forEach((food, index) => {
+                const foodCard = `<div class="food-card">
+                                    <h3>${food.name}</h3>
+                                    <p>${food.description}</p>
+                                    <p>What I Take From This: ${food.quantity}</p>
+                                    <button onclick="collectFood(${index})">Collect</button>
+                                  </div>`;
+                foodPostsContainer.innerHTML += foodCard;
+            });
+        }
+
+        function collectFood(index) {
+            let foodPosts = JSON.parse(localStorage.getItem("foodPosts")) || [];
+            foodPosts.splice(index, 1);
+            localStorage.setItem("foodPosts", JSON.stringify(foodPosts));
+            displayFoodPosts();
+        }
+    </script>
+</body>
+</html>
